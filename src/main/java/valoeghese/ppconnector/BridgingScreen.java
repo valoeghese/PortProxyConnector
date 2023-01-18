@@ -1,5 +1,6 @@
 package valoeghese.ppconnector;
 
+import benzenestudios.sulphate.Anchor;
 import benzenestudios.sulphate.SulphateScreen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -20,6 +21,8 @@ public class BridgingScreen extends SulphateScreen {
 	protected BridgingScreen(Screen parent, Host host) {
 		super(Component.empty(), parent);
 
+		this.setAnchorY(Anchor.TOP, () -> this.height / 2 + 12);
+
 		// responses:
 		// (ip)
 		// invalid code //even if not online
@@ -28,7 +31,7 @@ public class BridgingScreen extends SulphateScreen {
 			String publicIp = PortProxyConnector.getPublicIp();
 
 			if (publicIp == null) {
-				this.error(Component.translatable("noGetIp"));
+				this.error(Component.translatable("error.ppconnector.noGetIp"));
 				return;
 			}
 
@@ -38,7 +41,7 @@ public class BridgingScreen extends SulphateScreen {
 				String remoteIp = response.getAsString();
 
 				if ("invalid code".equals(remoteIp)) {
-					this.error(Component.translatable("notOnline"));
+					this.error(Component.translatable("error.ppconnector.notOnline"));
 					return;
 				}
 				else {
