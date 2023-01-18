@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "ppconnector",
+  "version": "${version}",
+
+  "name": "PortProxy Connector",
+  "description": "Simple port proxy connector that let's you join your friends with ease.",
+  "authors": [
+    "Valoeghese"
+  ],
+  
+  "icon": "assets/ppconnector/icon.png",
+  "license": "MIT",
+  
+  "environment": "client",
+  
+  "entrypoints": {
+    "client": [
+      "valoeghese.ppconnector.PortProxyConnector"
+    ]
+  },
+  
+  "depends": {
+    "fabricloader": ">=0.4.0",
+    "minecraft": "1.19.2"
+  },
+  
+  "mixins": [
+    "ppconnector.mixins.json"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "menu.ppconnector.portproxy": "PortProxy",
+  "button.ppconnector.addhost": "Add Host",
+  "button.ppconnector.join": "Join",
+
+  "ppconnector.connecting": "Connecting to PortProxy...",
+
+  "error.ppconnector.nogetip": "Could not get this computer's public IPV4 address",
+  "error.ppconnector.notOnline": "The user is not currently hosting or the server link is incorrect"
+}

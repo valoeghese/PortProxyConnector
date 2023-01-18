@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "valoeghese.ppconnector.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "MixinTitleScreen"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
