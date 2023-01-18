@@ -13,6 +13,7 @@ public class Host {
 	}
 
 	private volatile GameProfile user;
+	private volatile boolean resolved;
 	private String portProxyLink;
 
 	public GameProfile getUser() {
@@ -23,6 +24,20 @@ public class Host {
 		return this.user.getName();
 	}
 
+	public void resolve() {
+		GameProfile tempProfile = this.user;
+		Thread completer = new Thread(() -> {
+			this.user = Minecraft.getInstance().getMinecraftSessionService().fillProfileProperties(tempProfile, Boolean.getBoolean("ppconnector.requireSecure"));
+			this.resolved = true;
+		});
+		completer.setDaemon(true);
+		completer.start();
+	}
+
+	public boolean isResolved() {
+		return this.resolved;
+	}
+
 	public String getPortProxyLink() {
 		return this.portProxyLink;
 	}
@@ -30,13 +45,7 @@ public class Host {
 	public static Host of(JsonObject object) {
 		GameProfile tempProfile = new GameProfile(UUID.fromString(object.get("owner").getAsString()), object.get("ownerName").getAsString());
 		Host host = new Host(tempProfile, object.get("link").getAsString());
-
-		Thread completer = new Thread(() -> {
-			host.user = Minecraft.getInstance().getMinecraftSessionService().fillProfileProperties(tempProfile, Boolean.getBoolean("ppconnector.requireSecure"));
-		});
-		completer.setDaemon(true);
-		completer.start();
-
+		host.resolve();
 		return host;
 	}
 }

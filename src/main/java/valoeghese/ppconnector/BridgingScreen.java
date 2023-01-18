@@ -72,6 +72,6 @@ public class BridgingScreen extends SulphateScreen {
 	@Override
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
-		drawCenteredString(matrices, this.font, text, this.width/2, this.height/2, 0xDFDFDF);
+		drawCenteredString(matrices, this.font, text, this.width/2, this.height/2 - 12, 0xEFEFEF);
 	}
 }
