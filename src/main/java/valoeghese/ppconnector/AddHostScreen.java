@@ -4,6 +4,7 @@ import benzenestudios.sulphate.Anchor;
 import benzenestudios.sulphate.SulphateScreen;
 import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -113,6 +114,21 @@ public class AddHostScreen extends SulphateScreen {
 		this.button.active = true;
 		this.link.active = true;
 		this.username.active = true;
+	}
+
+	@Override
+	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
+		super.render(matrices, mouseX, mouseY, delta);
+
+		// Placeholders
+
+		if (this.link.getValue().isEmpty()) {
+			drawString(matrices, this.font, this.link.getMessage(), this.link.x + 2, this.link.y + this.link.getHeight()/2, 0xDFDFDF);
+		}
+
+		if (this.username.getValue().isEmpty()) {
+			drawString(matrices, this.font, this.username.getMessage(), this.username.x + 2, this.username.y + this.username.getHeight()/2, 0xDFDFDF);
+		}
 	}
 
 	private static final Map<String, String> USERNAME_TO_UUID = new HashMap<>();

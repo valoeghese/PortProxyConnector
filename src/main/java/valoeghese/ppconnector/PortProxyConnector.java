@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -12,12 +14,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.function.Consumer;
 
 public class PortProxyConnector implements ClientModInitializer {
+	static Logger logger = LogManager.getLogger("PortProxyConnector");
+
 	@Override
 	public void onInitializeClient() {
-		System.out.println("ooga wooga wochooga woochooga");
+		logger.info("ooga wooga wochooga woochooga");
 
 		// create folder for icons
 		(cacheFile = FabricLoader.getInstance().getGameDir().resolve(".ppconnector").toFile()).mkdir();
@@ -37,11 +42,35 @@ public class PortProxyConnector implements ClientModInitializer {
 				throw new UncheckedIOException("Error loading portproxy hosts", e);
 			}
 		}
+
+		// load settings
+		Properties defaults = new Properties();
+		defaults.setProperty("replaceRealms", "false");
+
+		settings = new Properties(defaults);
+		File settingsFile = FabricLoader.getInstance().getConfigDir().resolve("portproxyconnector.properties").toFile();
+
+		if (settingsFile.isFile()) {
+			try (Reader reader = new BufferedReader(new FileReader(settingsFile))) {
+				settings.load(reader);
+			}
+			catch (IOException e) {
+				throw new UncheckedIOException("Failed to load settings for PortProxyConnector", e);
+			}
+		}
+
+		try (Writer writer = new BufferedWriter(new FileWriter(settingsFile))) {
+			settings.store(writer, "PortProxyConnector Settings ${version}");
+		}
+		catch (IOException e) {
+			logger.error("Failed to save PortProxyConnector settings", e);
+		}
 	}
 
-	private static List<Host> hosts = new ArrayList<>();
+	private static final List<Host> hosts = new ArrayList<>();
 	private static File hostsFile;
 	public static File cacheFile;
+	public static Properties settings;
 
 	public static void addHost(Host host) {
 		hosts.add(host);
