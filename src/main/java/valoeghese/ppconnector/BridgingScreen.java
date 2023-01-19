@@ -2,6 +2,7 @@ package valoeghese.ppconnector;
 
 import benzenestudios.sulphate.Anchor;
 import benzenestudios.sulphate.SulphateScreen;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ConnectScreen;
@@ -45,7 +46,7 @@ public class BridgingScreen extends SulphateScreen {
 					return;
 				}
 				else {
-					ConnectScreen.startConnecting(this, Minecraft.getInstance(), ServerAddress.parseString(remoteIp), new ServerData(host.getDisplayName(), remoteIp, false));
+					RenderSystem.recordRenderCall(() -> ConnectScreen.startConnecting(this, Minecraft.getInstance(), ServerAddress.parseString(remoteIp), new ServerData(host.getDisplayName(), remoteIp, false)));
 				}
 			}
 			catch (IOException e) {
@@ -62,7 +63,12 @@ public class BridgingScreen extends SulphateScreen {
 	private Component text = Component.translatable("ppconnector.connecting");
 
 	private void error(Component reason) {
-		this.text = reason;
+		if (RenderSystem.isOnRenderThread()) {
+			this.text = reason;
+		}
+		else {
+			RenderSystem.recordRenderCall(() -> this.text = reason);
+		}
 	}
 
 	@Override

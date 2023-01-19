@@ -3,6 +3,7 @@ package valoeghese.ppconnector;
 import benzenestudios.sulphate.Anchor;
 import benzenestudios.sulphate.SulphateScreen;
 import com.mojang.authlib.GameProfile;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -34,7 +35,10 @@ public class AddHostScreen extends SulphateScreen {
 		this.addRenderableWidget(this.username = new EditBox(this.font, this.width / 2 - 100, this.height / 2 - 10 - 24, 200, 20, Component.translatable("textbox.ppconnector.enterUsername")));
 		this.addRenderableWidget(this.link = new EditBox(this.font, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Component.translatable("textbox.ppconnector.enterLink")));
 
-		Button b = this.addButton(98, 20, Component.translatable("button.ppconnector.addHost"), bn -> {
+		this.username.setMaxLength(16);
+		this.link.setMaxLength(64);
+
+		Button b = this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), bn -> {
 			this.button.active = false;
 			this.username.active = false;
 			this.link.active = false;
@@ -99,7 +103,16 @@ public class AddHostScreen extends SulphateScreen {
 	}
 
 	private void error(Component component) {
-		this.minecraft.setScreen(new ErrorScreen(component, this));
+		if (RenderSystem.isOnRenderThread()) {
+			this.minecraft.setScreen(new ErrorScreen(component, this));
+		}
+		else {
+			RenderSystem.recordRenderCall(() -> this.minecraft.setScreen(new ErrorScreen(component, this)));
+		}
+
+		this.button.active = true;
+		this.link.active = true;
+		this.username.active = true;
 	}
 
 	private static final Map<String, String> USERNAME_TO_UUID = new HashMap<>();
