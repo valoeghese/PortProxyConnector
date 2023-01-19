@@ -2,16 +2,20 @@
   "menu.ppconnector.portproxy": "PortProxy",
   "menu.ppconnector.addhost": "Add a New Host",
   "button.ppconnector.addhost": "Add Host",
+  "button.ppconnector.removehost": "Remove Host",
   "button.ppconnector.join": "Join",
+  "button.ppconnector.ok": "Ok",
   "textbox.ppconnector.enterUsername": "Username",
   "textbox.ppconnector.enterLink": "Portproxy URL",
 
   "ppconnector.connecting": "Connecting to PortProxy...",
+  "ppconnector.deleteWarning": "Are you sure you want to delete this host?",
 
   "error.ppconnector.nogetip": "Could not get this computer's public IPV4 address.",
   "error.ppconnector.notOnline": "The user is not currently hosting or the server link is incorrect.",
   "error.ppconnector.uuidLookupFailure": "Could not find user %s. Please ensure the username is correct, you have an internet connection, or try again in a few minutes.",
   "error.ppconnector.emptyUsername": "Username is missing.",
   "error.ppconnector.emptyLink": "Portproxy URL is missing.",
-  "error.ppconnector.invalidLink": "Invalid Portproxy URL: %s"
+  "error.ppconnector.invalidLink": "Invalid Portproxy URL: %s",
+  "error.ppconnector.savingHosts": "Unable to save hosts."
 }

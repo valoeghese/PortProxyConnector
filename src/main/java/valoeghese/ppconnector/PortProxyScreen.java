@@ -26,14 +26,20 @@ public class PortProxyScreen extends SulphateScreen {
 	@Nullable
 	private Host selected;
 	private Button join;
+	private Button modify;
+	private NamedIconList<Host> hostSelection;
 
 	@Override
 	protected void addWidgets() {
+		this.selected = null;
+		this.join.active = false;
+
 		// Selection
 
-		NamedIconList<Host> hostSelection = new NamedIconList<>(this.minecraft, this, this.font, Host::getDisplayName, host -> {
+		this.hostSelection = new NamedIconList<>(this.minecraft, this, this.font, Host::getDisplayName, host -> {
 			this.selected = host;
-			this.join.active = true;
+			this.join.active = host != null;
+			this.modify.setMessage(host == null ? Component.translatable("button.ppconnector.addhost") : Component.translatable("button.ppconnector.removehost"));
 		});
 
 		PortProxyConnector.forEachHost(h -> {
@@ -67,11 +73,21 @@ public class PortProxyScreen extends SulphateScreen {
 		this.join = this.addButton(98, 20, Component.translatable("button.ppconnector.join"), b -> {
 			this.minecraft.setScreen(new BridgingScreen(this, this.selected));
 		});
-		this.join.active = false;
 
-		this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), b -> this.minecraft.setScreen(new AddHostScreen(this)));
+		this.modify = this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), b -> this.minecraft.setScreen(this.selected == null ? new AddHostScreen(this) : new ConfirmDeleteScreen(this, this.selected)));
 
 		this.addDone(this.height - 32);
+	}
+
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		// Allow Deselection
+		if (this.hostSelection.isMouseOver(mouseX, mouseY) && this.hostSelection.getChildAt(mouseX, mouseY).isEmpty()) {
+			this.hostSelection.setSelected(null);
+			this.join.active = false;
+		}
+
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override

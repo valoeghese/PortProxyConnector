@@ -44,10 +44,9 @@ public class PortProxyConnector implements ClientModInitializer {
 		}
 
 		// load settings
-		Properties defaults = new Properties();
-		defaults.setProperty("replaceRealms", "false");
+		settings = new Properties();
+		settings.setProperty("replaceRealms", "false");
 
-		settings = new Properties(defaults);
 		File settingsFile = FabricLoader.getInstance().getConfigDir().resolve("portproxyconnector.properties").toFile();
 
 		if (settingsFile.isFile()) {
@@ -74,6 +73,10 @@ public class PortProxyConnector implements ClientModInitializer {
 
 	public static void addHost(Host host) {
 		hosts.add(host);
+	}
+
+	public static void removeHost(Host host) {
+		hosts.remove(host);
 	}
 
 	public static void forEachHost(Consumer<Host> hostConsumer) {

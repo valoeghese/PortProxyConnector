@@ -19,7 +19,7 @@ public class ErrorScreen extends SulphateScreen {
 
 	@Override
 	protected void addWidgets() {
-		this.addButton(CommonComponents.GUI_CANCEL, b -> this.onClose());
+		this.addButton(Component.translatable("button.ppconnector.ok"), b -> this.onClose());
 	}
 
 	@Override

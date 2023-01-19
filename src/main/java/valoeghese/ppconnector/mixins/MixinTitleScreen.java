@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import valoeghese.ppconnector.PortProxyConnector;
 import valoeghese.ppconnector.PortProxyScreen;
+import valoeghese.ppconnector.util.MutableButton;
 
 @Mixin(TitleScreen.class)
 public abstract class MixinTitleScreen extends Screen {
@@ -34,11 +36,20 @@ public abstract class MixinTitleScreen extends Screen {
 		}
 
 		if (realms != null) {
-			realms.setWidth(98);
+			final Component portProxyText = Component.translatable("menu.ppconnector.portproxy");
 
-			this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (FabricLoader.getInstance().isModLoaded("modmenu") ? -24 : 0), 98, 20, Component.translatable("menu.ppconnector.portproxy"), button -> {
-				this.minecraft.setScreen(new PortProxyScreen(this));
-			}));
+			if (PortProxyConnector.settings.getProperty("replaceRealms").equals("true")) {
+				realms.setMessage(portProxyText);
+				((MutableButton) realms).setTooltip(Button.NO_TOOLTIP);
+				((MutableButton) realms).setAction(b -> this.minecraft.setScreen(new PortProxyScreen(this)));
+			}
+			else {
+				realms.setWidth(98);
+
+				this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (FabricLoader.getInstance().isModLoaded("modmenu") ? -24 : 0), 98, 20, portProxyText, button -> {
+					this.minecraft.setScreen(new PortProxyScreen(this));
+				}));
+			}
 		}
 	}
 }

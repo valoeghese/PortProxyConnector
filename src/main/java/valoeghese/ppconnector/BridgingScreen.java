@@ -63,14 +63,12 @@ public class BridgingScreen extends SulphateScreen {
 		postThread.start();
 	}
 
-	private Component text = Component.translatable("ppconnector.connecting");
-
 	private void error(Component reason) {
 		if (RenderSystem.isOnRenderThread()) {
-			this.text = reason;
+			this.minecraft.setScreen(new ErrorScreen(reason, this.parent));
 		}
 		else {
-			RenderSystem.recordRenderCall(() -> this.text = reason);
+			RenderSystem.recordRenderCall(() -> this.minecraft.setScreen(new ErrorScreen(reason, this.parent)));
 		}
 	}
 
@@ -82,6 +80,6 @@ public class BridgingScreen extends SulphateScreen {
 	@Override
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
-		drawCenteredString(matrices, this.font, text, this.width/2, this.height / 2 - 50, 0xEFEFEF);
+		drawCenteredString(matrices, this.font, Component.translatable("ppconnector.connecting"), this.width/2, this.height / 2 - 50, 0xEFEFEF);
 	}
 }

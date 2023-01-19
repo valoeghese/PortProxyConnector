@@ -87,9 +87,13 @@ public class AddHostScreen extends SulphateScreen {
 
 				Host host = new Host(new GameProfile(UUID.fromString(uuid), username), url, true);
 				PortProxyConnector.addHost(host);
-				PortProxyConnector.saveHosts();
 
-				Minecraft.getInstance().tell(this::onClose);
+				if (PortProxyConnector.saveHosts()) {
+					Minecraft.getInstance().tell(this::onClose);
+				} else {
+					PortProxyConnector.removeHost(host);
+					Minecraft.getInstance().tell(() -> this.minecraft.setScreen(new ErrorScreen(Component.translatable("error.ppconnector.savingHosts"), this.parent)));
+				}
 			});
 
 			t.setName("Add Host " + this.username.getValue());
@@ -120,14 +124,19 @@ public class AddHostScreen extends SulphateScreen {
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
 
+		// Fix mojang's jank
+		if (this.link.isFocused() && this.username.isFocused()) {
+			this.link.setFocus(false);
+		}
+
 		// Placeholders
 
 		if (this.link.getValue().isEmpty()) {
-			drawString(matrices, this.font, this.link.getMessage(), this.link.x + 2, this.link.y + this.link.getHeight()/2, 0xDFDFDF);
+			drawString(matrices, this.font, this.link.getMessage(), this.link.x + 4, this.link.y + this.link.getHeight()/4 + 1, 0x9F9F9F);
 		}
 
 		if (this.username.getValue().isEmpty()) {
-			drawString(matrices, this.font, this.username.getMessage(), this.username.x + 2, this.username.y + this.username.getHeight()/2, 0xDFDFDF);
+			drawString(matrices, this.font, this.username.getMessage(), this.username.x + 4, this.username.y + this.username.getHeight()/4 + 1, 0x9F9F9F);
 		}
 	}
 
