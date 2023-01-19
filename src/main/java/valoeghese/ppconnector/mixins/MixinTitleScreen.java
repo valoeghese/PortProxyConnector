@@ -36,7 +36,7 @@ public abstract class MixinTitleScreen extends Screen {
 		if (realms != null) {
 			realms.setWidth(98);
 
-			this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (FabricLoader.getInstance().isModLoaded("modmenu") ? -24 : 0), 100, 20, Component.translatable("menu.ppconnector.portproxy"), button -> {
+			this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (FabricLoader.getInstance().isModLoaded("modmenu") ? -24 : 0), 98, 20, Component.translatable("menu.ppconnector.portproxy"), button -> {
 				this.minecraft.setScreen(new PortProxyScreen(this));
 			}));
 		}
