@@ -22,7 +22,7 @@ public class BridgingScreen extends SulphateScreen {
 	protected BridgingScreen(Screen parent, Host host) {
 		super(Component.empty(), parent);
 
-		this.setAnchorY(Anchor.TOP, () -> this.height / 2 + 12);
+		this.setAnchorY(Anchor.TOP, () -> this.height / 4 + 120 + 12);
 
 		// responses:
 		// (ip)
@@ -46,7 +46,10 @@ public class BridgingScreen extends SulphateScreen {
 					return;
 				}
 				else {
-					RenderSystem.recordRenderCall(() -> ConnectScreen.startConnecting(this, Minecraft.getInstance(), ServerAddress.parseString(remoteIp), new ServerData(host.getDisplayName(), remoteIp, false)));
+					// in case they changed screens by cancelling
+					if (Minecraft.getInstance().screen == this) {
+						RenderSystem.recordRenderCall(() -> ConnectScreen.startConnecting(this.parent, Minecraft.getInstance(), ServerAddress.parseString(remoteIp), new ServerData(host.getDisplayName(), remoteIp, false)));
+					}
 				}
 			}
 			catch (IOException e) {
@@ -79,6 +82,6 @@ public class BridgingScreen extends SulphateScreen {
 	@Override
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
-		drawCenteredString(matrices, this.font, text, this.width/2, this.height/2 - 12, 0xEFEFEF);
+		drawCenteredString(matrices, this.font, text, this.width/2, this.height / 2 - 50, 0xEFEFEF);
 	}
 }

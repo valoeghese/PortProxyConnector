@@ -1,5 +1,6 @@
 package valoeghese.ppconnector.mixins;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -35,7 +36,7 @@ public abstract class MixinTitleScreen extends Screen {
 		if (realms != null) {
 			realms.setWidth(98);
 
-			this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y, 100, 20, Component.translatable("menu.ppconnector.portproxy"), button -> {
+			this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (FabricLoader.getInstance().isModLoaded("modmenu") ? -24 : 0), 100, 20, Component.translatable("menu.ppconnector.portproxy"), button -> {
 				this.minecraft.setScreen(new PortProxyScreen(this));
 			}));
 		}
