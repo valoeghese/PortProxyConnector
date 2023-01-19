@@ -3,7 +3,8 @@
   "package": "valoeghese.ppconnector.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinTitleScreen"
+    "MixinTitleScreen",
+    "MixinRealmsNotificationScreen"
   ],
   "injectors": {
     "defaultRequire": 1
