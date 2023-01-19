@@ -2,9 +2,7 @@ package valoeghese.ppconnector;
 
 import benzenestudios.sulphate.Anchor;
 import benzenestudios.sulphate.SulphateScreen;
-import com.mojang.authlib.GameProfile;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -15,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import valoeghese.ppconnector.util.NamedIconList;
 
 import java.io.File;
-import java.util.UUID;
+import java.util.Locale;
 
 public class PortProxyScreen extends SulphateScreen {
 	public PortProxyScreen(Screen parent) {
@@ -38,20 +36,29 @@ public class PortProxyScreen extends SulphateScreen {
 			this.join.active = true;
 		});
 
-		ResourceLocation res = new ResourceLocation("ppconnector", "example");
-		Minecraft.getInstance().getTextureManager().register(
-				res,
-				new HttpTexture(
-						new File(FabricLoader.getInstance().getGameDir().toFile(), "ooga.png"),
-						"https://minotar.net/avatar/e7d9c0366a02490a877c2df42df51b7f/32",
-						new ResourceLocation("textures/misc/unknown_server.png"), false, null
-				)
-		);
+		PortProxyConnector.forEachHost(h -> {
+			ResourceLocation res = new ResourceLocation("ppconnector", "icon/" + h.getDisplayName().toLowerCase(Locale.ROOT) + h.getDisplayName().hashCode());
+			String dashlessUUID = h.getUser().getId().toString().replace("-", "");
 
-		hostSelection.add(
-				new Host(new GameProfile(UUID.fromString("e7d9c036-6a02-490a-877c-2df42df51b7f"), "Big Boy"), "https://eyezah.com/portproxy/join?3oZg17g7df"),
-				res
-		);
+			File folder = new File(PortProxyConnector.cacheFile, dashlessUUID.substring(0, 2));
+			folder.mkdirs();
+
+			if (Minecraft.getInstance().getTextureManager().getTexture(res, null) == null) {
+				Minecraft.getInstance().getTextureManager().register(
+						res,
+						new HttpTexture(
+								new File(folder, dashlessUUID + ".png"),
+								"https://minotar.net/avatar/" + dashlessUUID + "/32",
+								new ResourceLocation("textures/misc/unknown_server.png"), false, null
+						)
+				);
+			}
+
+			hostSelection.add(
+					h,
+					res
+			);
+		});
 
 		this.addRenderableWidget(hostSelection);
 
@@ -62,9 +69,7 @@ public class PortProxyScreen extends SulphateScreen {
 		});
 		this.join.active = false;
 
-		this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), b -> {
-			// TODO functionality
-		});
+		this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), b -> this.minecraft.setScreen(new AddHostScreen(this)));
 
 		this.addDone(this.height - 32);
 	}
@@ -73,5 +78,14 @@ public class PortProxyScreen extends SulphateScreen {
 	public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
 		super.render(matrices, mouseX, mouseY, delta);
 		drawCenteredString(matrices, this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+	}
+
+	@Override
+	public void onClose() {
+		if (Host.shouldUpdateHosts) {
+			PortProxyConnector.saveHosts();
+		}
+
+		super.onClose();
 	}
 }

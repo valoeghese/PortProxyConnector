@@ -26,7 +26,7 @@ public class BridgingScreen extends SulphateScreen {
 		// responses:
 		// (ip)
 		// invalid code //even if not online
-		//
+
 		Thread postThread = new Thread(() -> {
 			String publicIp = PortProxyConnector.getPublicIp();
 
@@ -54,6 +54,7 @@ public class BridgingScreen extends SulphateScreen {
 				return;
 			}
 		});
+
 		postThread.setDaemon(true);
 		postThread.start();
 	}
