@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.HttpTexture;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -31,9 +32,6 @@ public class PortProxyScreen extends SulphateScreen {
 
 	@Override
 	protected void addWidgets() {
-		this.selected = null;
-		this.join.active = false;
-
 		// Selection
 
 		this.hostSelection = new NamedIconList<>(this.minecraft, this, this.font, Host::getDisplayName, host -> {
@@ -76,7 +74,10 @@ public class PortProxyScreen extends SulphateScreen {
 
 		this.modify = this.addButton(98, 20, Component.translatable("button.ppconnector.addhost"), b -> this.minecraft.setScreen(this.selected == null ? new AddHostScreen(this) : new ConfirmDeleteScreen(this, this.selected)));
 
-		this.addDone(this.height - 32);
+		this.addButton(200, 20, CommonComponents.GUI_CANCEL, b -> this.onClose());
+
+		// update the selection to whatever was last selected. This preserves selection on resize, and disables join button on first entering screen as is proper.
+		this.hostSelection.select(this.selected);
 	}
 
 	@Override

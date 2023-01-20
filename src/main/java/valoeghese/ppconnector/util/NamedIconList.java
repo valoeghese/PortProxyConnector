@@ -46,6 +46,22 @@ public class NamedIconList<T> extends Selection<T> {
 		this.addEntry(entry);
 	}
 
+	public void select(@Nullable T item) {
+		if (item == null) {
+			this.setSelected(null);
+		}
+		else {
+			for (Selection<T>.Entry entry : this.children()) {
+				if (item.equals(entry.item)) {
+					this.setSelected(entry);
+					return;
+				}
+			}
+
+			// if there is no such entry, deselect
+			this.setSelected(null);
+		}
+	}
 	@Nullable
 	public T getSelectedItem() {
 		@Nullable NamedIconList<T>.Entry selected = (Entry) this.getSelected();
