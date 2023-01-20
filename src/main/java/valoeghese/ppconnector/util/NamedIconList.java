@@ -46,28 +46,6 @@ public class NamedIconList<T> extends Selection<T> {
 		this.addEntry(entry);
 	}
 
-	public void select(@Nullable T item) {
-		if (item == null) {
-			this.setSelected(null);
-		}
-		else {
-			for (Selection<T>.Entry entry : this.children()) {
-				if (item.equals(entry.item)) {
-					this.setSelected(entry);
-					return;
-				}
-			}
-
-			// if there is no such entry, deselect
-			this.setSelected(null);
-		}
-	}
-	@Nullable
-	public T getSelectedItem() {
-		@Nullable NamedIconList<T>.Entry selected = (Entry) this.getSelected();
-		return selected == null ? null : selected.item;
-	}
-
 	@Override
 	protected void renderSelection(PoseStack poseStack, int y0, int j, int dy, int colour1, int colour2) {
 		int x0 = this.x0 + (this.width - j) / 2;

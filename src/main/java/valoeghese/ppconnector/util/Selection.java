@@ -46,6 +46,29 @@ public abstract class Selection<T> extends ObjectSelectionList<Selection<T>.Entr
 		this.onSelect.accept(entry == null ? null : entry.item);
 	}
 
+	public void select(@Nullable T item) {
+		if (item == null) {
+			this.setSelected(null);
+		}
+		else {
+			for (Selection<T>.Entry entry : this.children()) {
+				if (item.equals(entry.item)) {
+					this.setSelected(entry);
+					return;
+				}
+			}
+
+			// if there is no such entry, deselect
+			this.setSelected(null);
+		}
+	}
+
+	@Nullable
+	public T getSelectedItem() {
+		@Nullable Selection<T>.Entry selected = this.getSelected();
+		return selected == null ? null : selected.item;
+	}
+
 	public void recenter() {
 		if (this.getSelected() != null) {
 			this.centerScrollOn(this.getSelected());
