@@ -47,7 +47,7 @@ public class PortProxyConnector implements ClientModInitializer {
 		settings = new Properties();
 		settings.setProperty("replaceRealms", "false");
 
-		File settingsFile = FabricLoader.getInstance().getConfigDir().resolve("portproxyconnector.properties").toFile();
+		settingsFile = FabricLoader.getInstance().getConfigDir().resolve("portproxyconnector.properties").toFile();
 
 		if (settingsFile.isFile()) {
 			try (Reader reader = new BufferedReader(new FileReader(settingsFile))) {
@@ -58,16 +58,12 @@ public class PortProxyConnector implements ClientModInitializer {
 			}
 		}
 
-		try (Writer writer = new BufferedWriter(new FileWriter(settingsFile))) {
-			settings.store(writer, "PortProxyConnector ${version} Settings");
-		}
-		catch (IOException e) {
-			logger.error("Failed to save PortProxyConnector settings", e);
-		}
+		saveSettings();
 	}
 
 	private static final List<Host> hosts = new ArrayList<>();
 	private static File hostsFile;
+	private static File settingsFile;
 	public static File cacheFile;
 	public static Properties settings;
 
@@ -113,6 +109,19 @@ public class PortProxyConnector implements ClientModInitializer {
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static boolean saveSettings() {
+		logger.info("Saving Settings...");
+
+		try (Writer writer = new BufferedWriter(new FileWriter(settingsFile))) {
+			settings.store(writer, "PortProxyConnector ${version} Settings");
+			return true;
+		}
+		catch (IOException e) {
+			logger.error("Failed to save PortProxyConnector settings", e);
 			return false;
 		}
 	}

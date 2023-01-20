@@ -5,7 +5,8 @@
   "client": [
     "MixinButton",
     "MixinTitleScreen",
-    "MixinRealmsNotificationScreen"
+    "MixinRealmsNotificationScreen",
+    "compat.MixinModMenuEventHandler"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,10 +1,12 @@
 {
   "menu.ppconnector.portproxy": "PortProxy",
   "menu.ppconnector.addhost": "Add a New Host",
+  "menu.ppconnector.settings": "PortProxy Connector Settings",
   "button.ppconnector.addhost": "Add Host",
   "button.ppconnector.removehost": "Remove Host",
   "button.ppconnector.join": "Join",
   "button.ppconnector.ok": "Ok",
+  "button.ppconnector.replaceRealms": "Replace Realms Button: ",
   "textbox.ppconnector.enterUsername": "Username",
   "textbox.ppconnector.enterLink": "Portproxy URL",
 
@@ -17,5 +19,6 @@
   "error.ppconnector.emptyUsername": "Username is missing.",
   "error.ppconnector.emptyLink": "Portproxy URL is missing.",
   "error.ppconnector.invalidLink": "Invalid Portproxy URL: %s",
-  "error.ppconnector.savingHosts": "Unable to save hosts."
+  "error.ppconnector.savingHosts": "Unable to save hosts.",
+  "error.ppconnector.savingSettings": "Unable to save settings."
 }

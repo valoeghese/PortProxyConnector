@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.Nullable;
 
 public class ErrorScreen extends SulphateScreen {
-	protected ErrorScreen(Component text, @Nullable Screen parent) {
+	public ErrorScreen(Component text, @Nullable Screen parent) {
 		super(Component.empty(), parent);
 		this.setAnchorY(Anchor.TOP, () -> this.height / 2 + 12);
 		this.text = text;
