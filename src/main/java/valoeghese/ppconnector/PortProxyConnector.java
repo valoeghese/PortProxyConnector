@@ -59,7 +59,7 @@ public class PortProxyConnector implements ClientModInitializer {
 		}
 
 		try (Writer writer = new BufferedWriter(new FileWriter(settingsFile))) {
-			settings.store(writer, "PortProxyConnector Settings ${version}");
+			settings.store(writer, "PortProxyConnector ${version} Settings");
 		}
 		catch (IOException e) {
 			logger.error("Failed to save PortProxyConnector settings", e);
