@@ -132,11 +132,11 @@ public class AddHostScreen extends SulphateScreen {
 		// Placeholders
 
 		if (this.link.getValue().isEmpty()) {
-			drawString(matrices, this.font, this.link.getMessage(), this.link.x + 4, this.link.y + this.link.getHeight()/4 + 1, 0x9F9F9F);
+			drawString(matrices, this.font, this.link.getMessage(), this.link.getX() + 4, this.link.getY() + this.link.getHeight()/4 + 1, 0x9F9F9F);
 		}
 
 		if (this.username.getValue().isEmpty()) {
-			drawString(matrices, this.font, this.username.getMessage(), this.username.x + 4, this.username.y + this.username.getHeight()/4 + 1, 0x9F9F9F);
+			drawString(matrices, this.font, this.username.getMessage(), this.username.getX() + 4, this.username.getY() + this.username.getHeight()/4 + 1, 0x9F9F9F);
 		}
 	}
 

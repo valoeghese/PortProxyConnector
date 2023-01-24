@@ -12,16 +12,8 @@ public abstract class MixinButton implements MutableButton {
 	@Shadow @Final @Mutable
 	protected Button.OnPress onPress;
 
-	@Shadow @Final @Mutable
-	protected Button.OnTooltip onTooltip;
-
 	@Override
 	public void setAction(Button.OnPress onPress) {
 		this.onPress = onPress;
-	}
-
-	@Override
-	public void setTooltip(Button.OnTooltip onTooltip) {
-		this.onTooltip = onTooltip;
 	}
 }

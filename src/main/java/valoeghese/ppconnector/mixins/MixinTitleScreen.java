@@ -1,9 +1,8 @@
 package valoeghese.ppconnector.mixins;
 
-import com.terraformersmc.modmenu.event.ModMenuEventHandler;
+import benzenestudios.sulphate.ClassicButton;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
@@ -16,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import valoeghese.ppconnector.PortProxyConnector;
 import valoeghese.ppconnector.PortProxyScreen;
 import valoeghese.ppconnector.compat.ModMenuCompat;
-import valoeghese.ppconnector.compat.SettingsScreen;
 import valoeghese.ppconnector.util.MutableButton;
 
 @Mixin(TitleScreen.class)
@@ -52,7 +50,7 @@ public abstract class MixinTitleScreen extends Screen {
 
 			if (replaceRealms) {
 				realms.setMessage(portProxyText);
-				((MutableButton) realms).setTooltip(Button.NO_TOOLTIP);
+				realms.setTooltip(null);
 				((MutableButton) realms).setAction(b -> this.minecraft.setScreen(new PortProxyScreen(this)));
 			}
 			else {
@@ -62,7 +60,7 @@ public abstract class MixinTitleScreen extends Screen {
 
 				realms.setWidth(98);
 
-				this.addRenderableWidget(new Button(realms.x + 100 + 2, realms.y + (modmenuLoaded ? ModMenuCompat.getShift() : 0), 98, 20, portProxyText, button -> {
+				this.addRenderableWidget(new ClassicButton(realms.getY() + 100 + 2, realms.getY() + (modmenuLoaded ? ModMenuCompat.getShift() : 0), 98, 20, portProxyText, button -> {
 					this.minecraft.setScreen(new PortProxyScreen(this));
 				}));
 			}
