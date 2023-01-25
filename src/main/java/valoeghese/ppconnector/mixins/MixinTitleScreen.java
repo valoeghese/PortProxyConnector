@@ -60,7 +60,7 @@ public abstract class MixinTitleScreen extends Screen {
 
 				realms.setWidth(98);
 
-				this.addRenderableWidget(new ClassicButton(realms.getY() + 100 + 2, realms.getY() + (modmenuLoaded ? ModMenuCompat.getShift() : 0), 98, 20, portProxyText, button -> {
+				this.addRenderableWidget(new ClassicButton(realms.getX() + 100 + 2, realms.getY() + (modmenuLoaded ? ModMenuCompat.getShift() : 0), 98, 20, portProxyText, button -> {
 					this.minecraft.setScreen(new PortProxyScreen(this));
 				}));
 			}
